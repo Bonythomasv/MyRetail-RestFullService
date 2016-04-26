@@ -1,4 +1,4 @@
-package com.tgt.mongodb;
+package com.tgt.app.db;
 
 import org.springframework.data.annotation.Id;
 

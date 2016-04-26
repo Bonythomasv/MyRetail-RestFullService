@@ -1,23 +1,20 @@
-package com.tgt.app;
+package com.tgt.app.controller;
 
 
-import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tgt.app.ProductService;
-import com.tgt.mongodb.Product;
-import com.tgt.response.CurrentPrice;
+import com.tgt.app.service.ProductService;
 import com.tgt.response.ProductPricing;
+
 
 /**
  * @author BonyThomas:
@@ -26,6 +23,8 @@ import com.tgt.response.ProductPricing;
 
 @RestController
 public class ProductPricingController  {
+    private static final Logger log = LoggerFactory.getLogger(ProductPricingController.class);
+
 	
 	// Spring DI inject the service 
     @Autowired
@@ -39,8 +38,11 @@ public class ProductPricingController  {
      */
 	@RequestMapping(value= "/products/{id}",method = RequestMethod.GET)
     public ProductPricing productPricing(@PathVariable(value="id") String Id) throws Exception {
-	//System.out.println("ID is "+Id);
+        //log.info("IDproductPricing.getName()=="" is "+Id);
+
+	
 		ProductPricing productPricing =  new ProductPricing();
+		//Numeric value validation for Id
 		String regex = "[0-9]+"; 
 		if(Id==null || !Id.matches(regex))
 		{
@@ -49,8 +51,9 @@ public class ProductPricingController  {
 		else		
 		{
 			 productPricing= productService.searchProductPrice(Id.toString());
-			if (productPricing==null || productPricing.getCurrentPrice() == null)
+			if (productPricing==null || productPricing.getCurrentPrice() == null||productPricing.getName()==null)
 			{		
+				 productPricing =  new ProductPricing();
 				productPricing.setErrorMsg("No Products Found with the Id "+Id);
 			}
 		}
@@ -69,10 +72,11 @@ public class ProductPricingController  {
 		System.out.println("ID is "+Id);
 		String responseMsg ="";
 		String regex = "[0-9]+"; 
-		System.out.println("Id.matches(regex) is "+Id.matches(regex));
+		log.info("Id.matches(regex) is "+Id.matches(regex));
+		
 		if(Id==null || !Id.matches(regex) || insertProductPricing == null)
 		{
-			responseMsg= "In correct Data!!! Please vallidate Id or RequestBody";
+			responseMsg= "Incorrect Data!!! Please vallidate Id or RequestBody";
 		}
 		else
 		{

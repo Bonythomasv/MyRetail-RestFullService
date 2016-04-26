@@ -1,10 +1,10 @@
-package com.tgt.app;
+package com.tgt.app.db;
 
 import java.util.List;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import com.tgt.mongodb.Product;
+import com.tgt.app.db.Product;
 
 /**
  * @author BonyThomas:
